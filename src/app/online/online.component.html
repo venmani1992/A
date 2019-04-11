@@ -1,0 +1,171 @@
+<div class="head">
+    <nav class="navbar navbar-expand-sm bg-warning navbar-warning">
+    <a class="navbar-brand" routerLink="/online"style="color:white" >Online</a>
+    <a class="navbar-brand"  routerLink="/sort" style="color:white" >Sort</a>
+    
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+      <ul class="navbar-nav">
+        <li *ngIf="login_page" class="nav-item">
+          <a class="nav-link" style="cursor: pointer;color:white;font-weight: 600" (click)="popup(content)"><i class="fa fa-sign-in"></i>Login</a>
+        </li>
+        <li *ngIf="logout_page" class="nav-item">
+           <a class="nav-link" style="cursor: pointer;color:white;font-weight: 600" ><i class="	fa fa-user-circle"></i>{{apiRouter.userdetails.username}} </a>
+         </li>
+        <li *ngIf="logout_page" class="nav-item">
+          <a class="nav-link" style="cursor: pointer;color:white;font-weight: 600" (click)="popupout()"><i class="fa fa-sign-out"></i>Logout </a>
+        </li>
+
+        <li class="nav-item">
+          <button type="button" (click)="popupcart(cart)" class="btn btn-danger">
+            Cart <span class="badge badge-light">{{apiRouter.cartlength}}</span>
+          </button>
+         
+          <ng-template  #content let-c="close" let-d="dismiss" >
+            <div class="modal-header" >
+                    <div style="font-size: 1.5rem;border-color: #ff8d60;color: #ff8d60;"><i  class="ft-server"></i> Login</div>
+              <!----<h4 style="margin-top:0px;" class="modal-title" id="modal-title">Division</h4>-->
+             <button style="color: #0cc27e;font-family: serif;font-size: 2.5em;" type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-6 offset-md-3">
+                  <ngb-alert *ngIf="logmsg" type="danger" (close)="logmsg = null">
+                    <div  class="alert-icon">
+                        <i  class="now-ui-icons ui-1_bell-53"></i> &nbsp;<strong>{{ logmsg }}</strong>
+                    </div>
+                  
+                </ngb-alert>  
+                    <form name="form" (ngSubmit)="f.form.valid && onSubmit(f)" #f="ngForm" novalidate>
+                       
+                        <div class="form-group">
+                            <label for="username">User Name</label>
+                            <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" [ngClass]="{ 'is-invalid': f.submitted && username.invalid }" required username />
+                            <div *ngIf="f.submitted && username.invalid" class="invalid-feedback">
+                                <div *ngIf="username.errors.required">User Name is required</div>
+                                <!--<div *ngIf="username.errors.email">Email must be a valid email address</div>-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" [(ngModel)]="model.email" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+                            <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+                                <div *ngIf="password.errors.required">Password is required</div>
+                                <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                            </div>
+                        </div>
+                        <div style="display: flex;justify-content: center">
+                            <button type="button" class="btn btn-danger btn-raised btn-round mr-1" (click)="reset(f)"><i  class="ft-refresh-cw position-right"></i> Reset</button>&nbsp;&nbsp;
+                            <button type="submit" ngbAutofocus class="btn btn-primary btn-raised btn-round mr-1" ><i class="ft-thumbs-up position-right"></i> Save</button>
+                          </div>
+                    </form>
+                </div>
+              </div>
+          </ng-template> 
+          <ng-template  #cart let-c="close" let-d="dismiss" >
+            <div class="modal-header" >
+                    <div style="font-size: 1.5rem;border-color: #ff8d60;color: #ff8d60;"><i  class="ft-server"></i> Cart</div>
+              <!----<h4 style="margin-top:0px;" class="modal-title" id="modal-title">Division</h4>-->
+             <button style="color: #0cc27e;font-family: serif;font-size: 2.5em;" type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+   
+                <table id="cart" class="table table-hover table-condensed">
+                          <thead>
+                          <tr>
+                            <th style="width:50%">Product</th>
+                            <th style="width:10%">Price</th>
+                            <th style="width:8%">Quantity</th>
+                            <th style="width:22%" class="text-center">Subtotal</th>
+                            <th style="width:10%"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let tt of apiRouter.userdetails.cartlist">
+                            <td>
+                              <div class="row">
+                                <div class="col-sm-2"><img src="https://woodbrook.ptanj.org/admin/images/product/{{tt.image_url}}" style="width:100px" alt="..." class="img-responsive"/></div>
+                                <div class="col-sm-10" style="text-align:center">
+                                  <h4>{{tt.color}}</h4>
+                                  <p>{{tt.color}}({{tt.grade}})</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td >${{tt.price}}</td>
+                            <td>
+                              <input type="number" class="form-control text-center" max="5" min="1" [(ngModel)]="tt.qty" >
+                            </td>
+                            <td  class="text-center">$ {{tt.price*tt.qty}}</td>
+                            <td class="actions" >
+                             
+                             							
+                            </td>
+                          </tr>
+                          
+                        </tbody>
+                        <tfoot>
+                         <tr>
+                            <td><a (click)="popupcartclose()" class="btn btn-warning">Continue Shopping</a></td>
+                            <td colspan="2" class="hidden-xs"></td>
+                            <td class="hidden-xs text-center"><strong>Total ${{grand()}}</strong></td>
+                            <td><a  class="btn btn-success">Checkout </a></td>
+                          </tr>
+                        </tfoot>
+                      </table>
+              
+              </div>
+          </ng-template> 
+         
+        </li>
+      </ul>
+    </div>
+    </nav>
+ </div>
+ <div >
+    <div class="row">
+    <carousel style="width:100%;">
+        <slide  >
+          <img src="https://simplypackaging.co.uk/wp-content/uploads/2015/03/Blue-background-2.png" alt="first slide" style="display: block; width: 100%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </div>
+        </slide>
+        <slide>
+          <img src="http://www.tristarsoftware.com/wp-content/uploads/2015/03/Elegant_Background-8-800x400.jpg" alt="second slide" style="display: block; width: 100%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Second slide label</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </slide>
+        <slide>
+          <img  src="https://s3.amazonaws.com/creare-websites-wpms-legacy/wp-content/uploads/sites/32/2012/09/01201720/Background-Fade1.jpg" alt="third slide" style="display: block; width: 100%;">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Third slide label</h3>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          </div>
+        </slide>
+      </carousel>
+    </div>
+ </div>
+ <div class="container" >
+   <div class="row">
+      
+          <div class="col-sm-4" *ngFor="let tt of productlist">
+          <div class="card" style="box-shadow: 0px 0px 5px grey;margin: 14px;" >
+           <img class="card-img-top" src="https://woodbrook.ptanj.org/admin/images/product/{{tt.image_url}}" alt="Card image" style="width:100%;height: 323px;box-shadow: 0px 1px 9px #8c8789;">
+            <div class="card-body" style="background-color: #f3dbbc;">
+              <h4 class="card-title">{{tt.color}}</h4>
+              <p class="card-text">{{tt.color}}({{tt.grade}})</p>
+              <span style="font-size: 22px;font-weight: 600;">$ {{tt.price}}</span><a style="float:right" (click)="addcart(tt,content)" class="btn btn-warning">ADD CART</a>
+            </div>
+           
+          </div>
+   </div>
+ </div>
+ </div>
+ <div class="jumbotron text-center" style="margin-bottom:0;background-color: #ffc107;color:white">
+   <p>Footer</p>
+ </div>

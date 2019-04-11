@@ -1,0 +1,41 @@
+<div class="head">
+    <nav class="navbar navbar-expand-sm bg-warning navbar-warning">
+    <a class="navbar-brand" routerLink="/online"style="color:white" >Online</a>
+    <a class="navbar-brand"  routerLink="/sort" style="color:white" >Sort</a>
+   
+    </nav>
+ </div>
+ <ng-template #itemTemplate let-item="item" let-index="index">
+    <div class="container" >
+        <div class="row">
+           
+               <span class="col-sm-3">
+                  <div class="card" style="box-shadow: 0px 0px 5px grey;margin: 14px;" >
+                      <img class="card-img-top" src="https://woodbrook.ptanj.org/admin/images/product/{{item.value.image_url}}" alt="Card image" style="width:100%;height: 323px;box-shadow: 0px 1px 9px #8c8789;">
+                      </div> 
+                    </span>
+        </div>
+    </div>
+   
+    
+    </ng-template>
+ <div class="container" >
+    <div class="row">
+        
+            <div class="col-sm-12">
+              <bs-sortable
+                [(ngModel)]="sortlist"
+                [itemTemplate]="itemTemplate"
+                itemClass="sortable-item"
+                itemActiveClass="sortable-item-active"
+                placeholderItem="Drag here"
+                placeholderClass="placeholderStyle"
+              ></bs-sortable>
+              </div>
+       
+  </div>
+  </div>
+ 
+ <div class="jumbotron text-center" style="margin-bottom:0;background-color: #ffc107;color:white">
+   <p>Footer</p>
+ </div>
